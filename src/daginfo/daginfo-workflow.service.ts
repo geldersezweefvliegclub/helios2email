@@ -43,7 +43,7 @@ export class DaginfoWorkflowService {
     const dagen = new Set<string>();
     for (const record of auditRecords) {
       try {
-        const normalized = (record.RESULTAAT ?? '').trim().replace(/\r|\n/g, '<br>');
+        const normalized = (record.RESULTAAT ?? '').trim().replace(/[\r\n]/g, '<br>');
         const parsed = JSON.parse(normalized) as { DATUM?: string };
         if (parsed.DATUM) {
           dagen.add(parsed.DATUM);
@@ -66,9 +66,7 @@ export class DaginfoWorkflowService {
     const dagrapporten = dagrapportResponse.dataset ?? [];
     const html = this.mailBuilder.buildCompleteMail({ dag, daginfo, dagrapporten });
 
-    const prefix = process.env.EMAIL_SUBJECT_PREFIX?.trim();
-    const subjectBase = `Dagrapport van ${ymdToDutchDisplay(dag)}`;
-    const subject = prefix ? `${prefix} ${subjectBase}` : subjectBase;
+    const subject = `Dagrapport van ${ymdToDutchDisplay(dag)}`;
 
     const alwaysTo = (process.env.DAGINFO_ALWAYS_TO ?? '')
       .split(',')

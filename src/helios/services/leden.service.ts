@@ -9,6 +9,7 @@ export interface HeliosDatasetResponse<T> {
 
 export interface LidRecord {
   ID?: number;
+  VOORNAAM?: string;
   NAAM: string;
   EMAIL: string;
   EMAIL_DAGINFO?: boolean;
@@ -30,5 +31,11 @@ export class LedenService {
       BEHEERDERS: true
     });
     return response.dataset ?? [];
+  }
+
+  async getLidById(id: number): Promise<LidRecord> {
+    return this.apiService.get<LidRecord>('Leden/GetObject', {
+      ID: id
+    });
   }
 }
