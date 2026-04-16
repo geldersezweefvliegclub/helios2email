@@ -9,7 +9,7 @@ export class LogboekScheduler
 
   constructor(private readonly workflow: LogboekWorkflowService) {}
 
-  @Cron(process.env.CRON_LOGBOOK || '* * * * *', {
+  @Cron(process.env.CRON_LOGBOOK || '0 22 * * *', {
     timeZone: process.env.CRON_TIMEZONE || 'Europe/Amsterdam'
   })
   async handleCron(): Promise<void> {
