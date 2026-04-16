@@ -5,12 +5,13 @@ import { DaginfoService } from '../helios/services/daginfo.service';
 import { DagrapportenService } from '../helios/services/dagrapporten.service';
 import { LedenService, LidRecord } from '../helios/services/leden.service';
 import { LoginService } from '../helios/services/login.service';
-import { DagRapportMailBuilder } from './dag-rapport-mail-builder.service';
+import { DagRapportMailBuilder } from './dagrapport-mail-builder.service';
 import { toYmd, ymdToDutchDisplay } from '../common/date.util';
 
 @Injectable()
-export class DaginfoWorkflowService {
-  private readonly logger = new Logger(DaginfoWorkflowService.name);
+export class DagrapportWorkflowService
+{
+  private readonly logger = new Logger(DagrapportWorkflowService.name);
 
   constructor(
     private readonly loginService: LoginService,

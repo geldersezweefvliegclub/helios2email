@@ -4,7 +4,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import * as Joi from 'joi';
 import { HeliosModule } from './helios/helios.module';
 import { GoogleModule } from './google/google.module';
-import { DaginfoModule } from './daginfo/daginfo.module';
+import { DagrapportModule } from './dagrapport/dagrapport.module';
 import { HerinneringDagrapportModule } from './herinnering_dagrapport/herinnering-dagrapport.module';
 
 @Module({
@@ -25,7 +25,7 @@ import { HerinneringDagrapportModule } from './herinnering_dagrapport/herinnerin
     ScheduleModule.forRoot(),
     HeliosModule,
     GoogleModule,
-    DaginfoModule,
+    DagrapportModule,
     HerinneringDagrapportModule
   ]
 })
