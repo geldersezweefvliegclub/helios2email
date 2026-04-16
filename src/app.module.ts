@@ -6,6 +6,7 @@ import { HeliosModule } from './helios/helios.module';
 import { GoogleModule } from './google/google.module';
 import { DagrapportModule } from './dagrapport/dagrapport.module';
 import { HerinneringDagrapportModule } from './herinnering_dagrapport/herinnering-dagrapport.module';
+import { HerinneringDienstenModule } from "./herinnering_diensten/herinnering-diensten.module";
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { HerinneringDagrapportModule } from './herinnering_dagrapport/herinnerin
         VERZENDEN_EMAIL: Joi.string().optional(),
         CRON_DAGINFO: Joi.string().optional(),
         CRON_HERINNERING_DAGINFO: Joi.string().optional(),
+        CRON_HERINNERING_DIENSTEN: Joi.string().optional(),
         CRON_TIMEZONE: Joi.string().optional(),
         HELIOS_CREDENTIAL_FILE: Joi.string().optional(),
         DAGINFO_ALWAYS_TO: Joi.string().allow('').optional(),
@@ -26,6 +28,7 @@ import { HerinneringDagrapportModule } from './herinnering_dagrapport/herinnerin
     HeliosModule,
     GoogleModule,
     DagrapportModule,
+    HerinneringDienstenModule,
     HerinneringDagrapportModule
   ]
 })
