@@ -13,7 +13,7 @@ export class LogboekScheduler
     timeZone: process.env.CRON_TIMEZONE || 'Europe/Amsterdam'
   })
   async handleCron(): Promise<void> {
-    this.logger.log('Running logbook cron');
+    this.logger.log('Running dagelijks-logboek cron');
     await this.workflow.run();
   }
 }

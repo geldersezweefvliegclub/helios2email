@@ -28,7 +28,7 @@ export class LogboekWorkflowService
 
     const startlijst = await this.startlijstService.getStartsVoorDag(datum);
     if (!startlijst.length) {
-      this.logger.log('No starts found, skipping logbook emails');
+      this.logger.log('No starts found, skipping dagelijks-logboek emails');
       return;
     }
 

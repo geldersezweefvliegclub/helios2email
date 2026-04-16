@@ -7,7 +7,7 @@ import { GoogleModule } from './google/google.module';
 import { DagrapportModule } from './dagrapport/dagrapport.module';
 import { HerinneringDagrapportModule } from './herinnering_dagrapport/herinnering-dagrapport.module';
 import { HerinneringDienstenModule } from "./herinnering_diensten/herinnering-diensten.module";
-import {LogboekModule} from "./logbook/logboek.module";
+import {LogboekModule} from "./dagelijks-logboek/logboek.module";
 
 @Module({
   imports: [
