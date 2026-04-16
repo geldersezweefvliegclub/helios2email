@@ -13,6 +13,8 @@ export interface LidRecord {
   NAAM: string;
   EMAIL: string;
   EMAIL_DAGINFO?: boolean;
+  LIDTYPE_ID?: number;
+  MEDICAL?: string;
 }
 
 @Injectable()
