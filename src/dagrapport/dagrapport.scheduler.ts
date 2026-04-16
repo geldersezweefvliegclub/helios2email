@@ -9,7 +9,7 @@ export class DagrapportScheduler
 
   constructor(private readonly workflow: DagrapportWorkflowService) {}
 
-  @Cron(process.env.CRON_DAGINFO || '0 22 * * *', {
+  @Cron(process.env.CRON_DAGINFO || '30 22 * * *', {
     timeZone: process.env.CRON_TIMEZONE || 'Europe/Amsterdam'
   })
   async handleCron(): Promise<void> {

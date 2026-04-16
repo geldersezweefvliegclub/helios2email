@@ -8,6 +8,7 @@ import { DagrapportModule } from './dagrapport/dagrapport.module';
 import { HerinneringDagrapportModule } from './herinnering_dagrapport/herinnering-dagrapport.module';
 import { HerinneringDienstenModule } from "./herinnering_diensten/herinnering-diensten.module";
 import {LogboekModule} from "./dagelijks-logboek/logboek.module";
+import {VluchtGeenMedicalModule} from "./vlucht_geen_medical/vlucht-geen-medical.module";
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import {LogboekModule} from "./dagelijks-logboek/logboek.module";
         VERZENDEN_EMAIL: Joi.string().optional(),
 
         CRON_DAGINFO: Joi.string().optional(),
-        CRON_LOGBOOK: Joi.string().optional(),
+        CRON_LOGBOEK: Joi.string().optional(),
         CRON_VLUCHT_GEEN_MEDICAL: Joi.string().optional(),
         CRON_VLUCHT_BEVOEGHEID: Joi.string().optional(),
         CRON_PENNINGMEESTER: Joi.string().optional(),
@@ -40,6 +41,7 @@ import {LogboekModule} from "./dagelijks-logboek/logboek.module";
     GoogleModule,
     LogboekModule,
     DagrapportModule,
+    VluchtGeenMedicalModule,
     HerinneringDienstenModule,
     HerinneringDagrapportModule
   ]
