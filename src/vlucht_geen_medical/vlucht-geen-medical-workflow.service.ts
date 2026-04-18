@@ -11,7 +11,6 @@ import { HeliosLidTypes} from "../helios/helios.types";
 @Injectable()
 export class VluchtGeenMedicalWorkflowService {
   private readonly logger = new Logger(VluchtGeenMedicalWorkflowService.name);
-  private readonly MIDDAG_INSTR = 1806;       // uit type tabel
 
   constructor(
     private readonly loginService: LoginService,
@@ -36,6 +35,9 @@ export class VluchtGeenMedicalWorkflowService {
     const selfPicLeden = new Set<number>();
     for (const start of startlijst) {
       if (!start.STARTTIJD || !start.VLIEGER_ID) {
+        continue;
+      }
+      if (start.INSTRUCTIEVLUCHT) {
         continue;
       }
       selfPicLeden.add(start.VLIEGER_ID);
