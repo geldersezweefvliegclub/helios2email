@@ -5,6 +5,8 @@ import { LedenService } from '../helios/services/leden.service';
 import { LoginService } from '../helios/services/login.service';
 import { StartlijstService } from '../helios/services/startlijst.service';
 import { LogboekMailBuilder } from './logboek-mail.builder';
+import { HeliosLidTypes} from "../helios/helios.types";
+import { buildEmailErrorHtml} from "../common/error-mail.builder";
 
 @Injectable()
 export class LogboekWorkflowService
@@ -22,13 +24,13 @@ export class LogboekWorkflowService
   async run(baseDate = new Date()): Promise<void> {
     const datum = toYmd(baseDate);
     const datumString = toDutchLongDate(baseDate);
-    this.logger.log(`Starting logbook workflow for ${datum}`);
+    this.logger.log(`Start logbook workflow, datum ${datum}`);
 
     await this.loginService.login();
 
     const startlijst = await this.startlijstService.getStartsVoorDag(datum);
     if (!startlijst.length) {
-      this.logger.log('No starts found, skipping dagelijks-logboek emails');
+      this.logger.log('Geen starts gevonden, geen dagelijks-logboek emails');
       return;
     }
 
@@ -47,7 +49,13 @@ export class LogboekWorkflowService
       const lid = await this.ledenService.getLidById(lidId);
       const to = this.resolvePrimaryRecipient(lid);
       if (!to) {
-        this.logger.warn(`Skipping lid ${lidId}; no recipient configured`);
+        const html = buildEmailErrorHtml("Logboek, geen email", `<p>${lid.NAAM} heeft gevlogen op ${datum}, maar heeft geen emailadres. Onderneem aktie</p>`);
+        await this.googleService.sendHtmlEmail({
+          to: process.env.ICT || 'ict@gezc.org',
+          subject: 'Logboek, email ontbeekt',
+          html
+        });
+        this.logger.warn(`${lid.NAAM} heeft geen email address. Mail naar ICT gestuurd`);
         continue;
       }
 
@@ -68,7 +76,7 @@ export class LogboekWorkflowService
         html
       });
 
-      this.logger.log(`Logbook email sent for lid ${lidId} to ${to}`);
+      this.logger.log(`Logbook email voor ${lid.NAAM} verstuurd naar ${to}`);
     }
   }
 
@@ -77,15 +85,21 @@ export class LogboekWorkflowService
     const startadminEmail = process.env.STARTADMIN_EMAIL || 'startadmin@gezc.org';
 
     switch (lid.LIDTYPE_ID) {
-      case 607:
-      case 608:
-        return lid.EMAIL || penningmeesterEmail;
-      case 609:
-        return startadminEmail;
-      case 610:
-      case 612:
-      case 613:
+      case HeliosLidTypes.ZUSTERCLUB:
+      case HeliosLidTypes.RITTENKAARTHOUDER:
+      {
         return penningmeesterEmail;
+      }
+      case HeliosLidTypes.NIEUW_LID:
+      {
+        return startadminEmail;
+      }
+      case HeliosLidTypes.OPROTKABEL:
+      case HeliosLidTypes.PENNINGMEESTER:
+      case HeliosLidTypes.SYSTEEM_ACCOUNT:
+      {
+        return penningmeesterEmail;
+      }
       default:
         return lid.EMAIL;
     }
