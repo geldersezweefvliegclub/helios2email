@@ -6,17 +6,13 @@ import { LedenService } from '../helios/services/leden.service';
 import { LoginService } from '../helios/services/login.service';
 import { RoosterService } from '../helios/services/rooster.service';
 import { HerinneringDagrapportMailBuilder } from './herinnering-dagrapport-mail.builder';
+import { HeliosDienstenTypes } from "../helios/helios.types";
+import {buildEmailErrorHtml} from "../common/error-mail.builder";
 
 @Injectable()
 export class HerinneringDagrapportWorkflowService
 {
   private readonly logger = new Logger(HerinneringDagrapportWorkflowService.name);
-  private readonly DDWV_VELDLEIDER = 1804;    // uit type tabel   1804 = startleider, maar veldleider op DDWV dagen
-  private readonly OCHTEND_DDI = 1800;        // uit type tabel
-  private readonly OCHTEND_INSTR = 1801;      // uit type tabel
-  private readonly MIDDAG_DDI = 1805;         // uit type tabel
-  private readonly MIDDAG_INSTR = 1806;       // uit type tabel
-
 
   constructor(
     private readonly loginService: LoginService,
@@ -29,19 +25,19 @@ export class HerinneringDagrapportWorkflowService
 
   async run(forDate = new Date()): Promise<void> {
     const datum = toYmd(forDate);
-    this.logger.log(`Starting herinnering_daginfo workflow for ${datum}`);
+    this.logger.log(`Starti herinnering_daginfo workflow, datum ${datum}`);
 
     await this.loginService.login();
 
     const rooster = await this.roosterService.getRooster(datum);
     if (!rooster?.CLUB_BEDRIJF && !rooster?.DDWV) {
-      this.logger.log('No club day and no DDWV day, skipping reminder email');
+      this.logger.log('Geen clubdag en geen DDWV, geen email nodig');
       return;
     }
 
     const diensten = await this.dienstenService.getDiensten(datum);
     if (diensten.length === 0) {
-      this.logger.log('No diensten found, skipping reminder email');
+      this.logger.log('Geen ingeroosterde diensten gevonden, herinnering email kan niet verstuurd worden');
       return;
     }
 
@@ -53,20 +49,27 @@ export class HerinneringDagrapportWorkflowService
       }
 
       if (!dienst.LID_ID) {
-        this.logger.warn(`Skipping dienst without LID_ID: ${JSON.stringify(dienst)}`);
+        this.logger.warn(`Dienst zonder lid, ${JSON.stringify(dienst)}`);
         continue;
       }
 
       const lid = await this.ledenService.getLidById(dienst.LID_ID);
       if (!lid?.EMAIL) {
-        this.logger.warn(`Skipping lid ${dienst.LID_ID} without email address`);
+        const html = buildEmailErrorHtml("Dagrapport herinnering, geen email", `<p>${lid.NAAM} heeft een ingeroosterde dienst op ${datum}, maar heeft geen emailadres. Onderneem aktie</p>`);
+        await this.googleService.sendHtmlEmail({
+          to: process.env.ICT || 'ict@gezc.org',
+          subject: 'Dagrapport herinnering, email ontbeekt',
+          html
+        });
+
+        this.logger.warn(`${lid.NAAM} heeft geen email address. Mail naar ICT gestuurd`);
         continue;
       }
 
       const html = this.mailBuilder.buildHtml({
         voornaam: lid.VOORNAAM || lid.NAAM || '',
         datumString,
-        typeDienst: (dienst.TYPE_DIENST_ID == this.DDWV_VELDLEIDER ? 'veldleider' : dienst.TYPE_DIENST) || ''
+        typeDienst: (dienst.TYPE_DIENST_ID == HeliosDienstenTypes.OCHTEND_STARTLEIDER ? 'veldleider' : dienst.TYPE_DIENST) || ''
       });
 
       const subject = `Je dienst van ${datumString}`;
@@ -77,7 +80,7 @@ export class HerinneringDagrapportWorkflowService
         html
       });
 
-      this.logger.log(`Herinnering daginfo sent to ${lid.EMAIL}`);
+      this.logger.log(`Herinnering dagrapport verstuurd naar ${lid.NAAM}, (${lid.EMAIL})`);
     }
   }
 
@@ -87,16 +90,16 @@ export class HerinneringDagrapportWorkflowService
     // deze functies kunnen dagrapport schrijven
     if (rooster.CLUB_BEDRIJF) {
       return [
-         this.OCHTEND_DDI,
-         this.OCHTEND_INSTR,
-         this.MIDDAG_DDI,
-         this.MIDDAG_INSTR
+         HeliosDienstenTypes.OCHTEND_DDI,
+         HeliosDienstenTypes.OVERLAP_INSTRUCTEUR,
+         HeliosDienstenTypes.MIDDAG_INSTRUCTEUR,
+         HeliosDienstenTypes.MIDDAG_DDI
       ].includes(typeId);
     }
 
     // Voor DDWV is het de veldleider
     if (rooster.DDWV) {
-      return typeId === this.DDWV_VELDLEIDER;
+      return typeId === HeliosDienstenTypes.OCHTEND_STARTLEIDER;
     }
 
     return false;

@@ -25,19 +25,19 @@ export class DagrapportWorkflowService
 
   async run(forDate = new Date()): Promise<void> {
     const today = toYmd(forDate);
-    this.logger.log(`Starting daginfo workflow for ${today}`);
+    this.logger.log(`Start daginfo workflow, datum ${today}`);
 
     await this.loginService.login();
 
     const ontvangers = await this.getSubscribers();
     if (ontvangers.length === 0) {
-      this.logger.warn('No subscribers found');
+      this.logger.warn('Niemand heeft zich aangemeld');
       return;
     }
 
     const auditRecords = await this.auditService.getDagrapportAudit(today);
     if (auditRecords.length === 0) {
-      this.logger.log('No audit records for oper_dagrapporten today, nothing to send');
+      this.logger.log('Geen audit records voor oper_dagrapporten today, niets te melden');
       return;
     }
 
@@ -50,7 +50,7 @@ export class DagrapportWorkflowService
           dagen.add(parsed.DATUM);
         }
       } catch (error) {
-        this.logger.warn(`Could not parse audit RESULTAAT: ${record.RESULTAAT}`);
+        this.logger.warn(`Verwerkingsfout audit RESULTAAT: ${record.RESULTAAT}`);
       }
     }
 
@@ -86,7 +86,7 @@ export class DagrapportWorkflowService
       subject,
       html
     });
-    this.logger.log(`Daginfo mail sent to ${addressees} for ${dag}`);
+    this.logger.log(`Dagrapport mail verstuurd naar ${addressees}, datum ${dag}`);
 
   }
 

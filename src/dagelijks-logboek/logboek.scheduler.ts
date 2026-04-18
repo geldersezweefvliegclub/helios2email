@@ -7,13 +7,15 @@ export class LogboekScheduler
 {
   private readonly logger = new Logger(LogboekScheduler.name);
 
-  constructor(private readonly workflow: LogboekWorkflowService) {}
+  constructor(private readonly workflow: LogboekWorkflowService) {
+    this.logger.log(`Cron expression: ${process.env.CRON_LOGBOEK || '0 22 * * *'}`);
+  }
 
   @Cron(process.env.CRON_LOGBOEK || '0 22 * * *', {
     timeZone: process.env.CRON_TIMEZONE || 'Europe/Amsterdam'
   })
   async handleCron(): Promise<void> {
-    this.logger.log('Running dagelijks-logboek cron');
+    this.logger.log('Aanroepen dagelijks-logboek cron');
     await this.workflow.run();
   }
 }

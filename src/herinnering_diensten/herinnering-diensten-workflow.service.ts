@@ -6,6 +6,7 @@ import { LedenService } from '../helios/services/leden.service';
 import { LoginService } from '../helios/services/login.service';
 import { RoosterService } from '../helios/services/rooster.service';
 import { HerinneringDienstenMailBuilder } from './herinnering-diensten-mail.builder';
+import {buildEmailErrorHtml} from "../common/error-mail.builder";
 
 @Injectable()
 export class HerinneringDienstenWorkflowService {
@@ -25,20 +26,20 @@ export class HerinneringDienstenWorkflowService {
     forDate.setDate(forDate.getDate() + 3);
 
     const datum = toYmd(forDate);
-    this.logger.log(`Starting herinnering_diensten workflow for ${datum}`);
+    this.logger.log(`Start herinnering_diensten workflow, datum ${datum}`);
 
     await this.loginService.login();
 
     const rooster = await this.roosterService.getRooster(datum);
     if (!rooster?.CLUB_BEDRIJF && !rooster?.DDWV) {
-      this.logger.log('No club day and no DDWV day, skipping reminder email');
+      this.logger.log('Geen clubdag en geen DDWV, geen email nodig');
       return;
     }
 
     const schema = rooster.CLUB_BEDRIJF ? this.getClubSchema() : this.getDdwvSchema();
     const diensten = await this.dienstenService.getDiensten(datum);
     if (diensten.length === 0) {
-      this.logger.log('No diensten found, skipping reminder email');
+      this.logger.log('Geen ingeroosterde diensten gevonden, herinnering email kan niet verstuurd worden');
       return;
     }
 
@@ -47,13 +48,20 @@ export class HerinneringDienstenWorkflowService {
 
     for (const dienst of diensten) {
       if (!dienst.LID_ID) {
-        this.logger.warn(`Skipping dienst without LID_ID: ${JSON.stringify(dienst)}`);
+        this.logger.warn(`Dienst zonder lid, ${JSON.stringify(dienst)}`);
         continue;
       }
 
       const lid = await this.ledenService.getLidById(dienst.LID_ID);
       if (!lid?.EMAIL) {
-        this.logger.warn(`Skipping lid ${dienst.LID_ID} without email address`);
+        const html = buildEmailErrorHtml("Dienst herinnering, geen email", `<p>${lid.NAAM} heeft een ingeroosterde dienst op ${datum}, maar heeft geen emailadres. Onderneem aktie</p>`);
+        await this.googleService.sendHtmlEmail({
+          to: process.env.ICT || 'ict@gezc.org',
+          subject: 'Dienst herinnering, email ontbeekt',
+          html
+        });
+
+        this.logger.warn(`${lid.NAAM} heeft geen email address. Mail naar ICT gestuurd`);
         continue;
       }
 
