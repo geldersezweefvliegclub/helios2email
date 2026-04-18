@@ -34,6 +34,7 @@ import {VluchtGeenMedicalModule} from "./vlucht_geen_medical/vlucht-geen-medical
         PENNINGMEESTER_EMAIL: Joi.string().email().optional(),
         STARTADMIN_EMAIL: Joi.string().email().optional(),
         CIMT_EMAIL: Joi.string().email().optional(),
+        ICT_EMAIL: Joi.string().email().optional(),
       })
     }),
     ScheduleModule.forRoot(),
