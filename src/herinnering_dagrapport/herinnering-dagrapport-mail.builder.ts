@@ -1,10 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import fs from "node:fs";
-import {escapeHtml} from "../common/html.util";
+import {escapeHtml, loadTemplate, renderTemplate} from "../common/html.util";
 
+/**
+ * Bouwer voor herinnering dagrapport e-mails, die HTML genereert voor dagrapport herinneringse-mails.
+ */
 @Injectable()
 export class HerinneringDagrapportMailBuilder
 {
+  /**
+   * Bouwt de HTML voor de herinnering dagrapport e-mail met voornaam, datum en diensttype.
+   */
   buildHtml({
     voornaam,
     datumString,
@@ -14,14 +19,13 @@ export class HerinneringDagrapportMailBuilder
     datumString: string;
     typeDienst: string;
   }): string {
-    var html = fs.readFileSync(`${process.env.TEMPLATE_PATH}/herinnering-dagrapport.html`, 'utf8');
-    const base64img = fs.readFileSync('./templates/gezc-logo.png', {encoding: 'base64'});
-    html = html.replaceAll(/\{base64img}/g, base64img);
-
-    html = html.replaceAll(/\{DATUM_STRING}/g, escapeHtml(datumString));
-    html = html.replaceAll(/\{VOORNAAM}/g, voornaam);
-    html = html.replaceAll(/\{TYPE_DIENST}/g, typeDienst);
-
-    return html
+     // Vervang placeholders door echte waarden
+     const inhoud =
+       {
+         VOORNAAM: escapeHtml(voornaam),
+         DATUM_STRING: escapeHtml(datumString),
+         TYPE_DIENST: typeDienst
+       }
+    return renderTemplate(loadTemplate('herinnering-dagrapport.html'), inhoud);
   }
 }

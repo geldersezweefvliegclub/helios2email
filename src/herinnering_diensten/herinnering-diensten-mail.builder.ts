@@ -1,9 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import fs from 'node:fs';
-import { escapeHtml } from '../common/html.util';
+import {escapeHtml, loadTemplate, renderTemplate} from '../common/html.util';
 
+/**
+ * Bouwer voor herinnering diensten e-mails, die HTML genereert voor diensten herinneringse-mails.
+ */
 @Injectable()
 export class HerinneringDienstenMailBuilder {
+  /**
+   * Bouwt de HTML voor de herinnering diensten e-mail met voornaam, datum, diensttype en schema.
+   */
   buildHtml({
     voornaam,
     datumString,
@@ -15,15 +20,14 @@ export class HerinneringDienstenMailBuilder {
     typeDienst: string;
     schema: string;
   }): string {
-    let html = fs.readFileSync(`${process.env.TEMPLATE_PATH || './templates'}/herinnering-diensten.html`, 'utf8');
-    const base64img = fs.readFileSync('./templates/gezc-logo.png', { encoding: 'base64' });
-
-    html = html.replaceAll(/\{base64img}/g, base64img);
-    html = html.replaceAll(/\{VOORNAAM}/g, escapeHtml(voornaam));
-    html = html.replaceAll(/\{DATUM_STRING}/g, escapeHtml(datumString));
-    html = html.replaceAll(/\{TYPE_DIENST}/g, escapeHtml(typeDienst));
-    html = html.replaceAll(/\{SCHEMA}/g, schema);
-
-    return html;
+     // Vervang placeholders door echte waarden
+    const inhoud =
+       {
+         VOORNAAM: escapeHtml(voornaam),
+         DATUM_STRING: escapeHtml(datumString),
+         TYPE_DIENST: typeDienst,
+         SCHEMA: schema
+       }
+    return renderTemplate(loadTemplate('herinnering-diensten.html'), inhoud);
   }
 }

@@ -1,6 +1,8 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import * as fs from 'node:fs';
 import { GoogleService } from '../../google/google.service';
+import {nl2br} from "../../common/html.util";
+import {buildEmailErrorHtml} from "../../common/error-mail.builder";
 
 export const HELIOS_CREDENTIAL_FILE = 'helios.account.json';
 
@@ -87,13 +89,16 @@ export class APIService {
 
       return response;
     } catch (error: any) {
-      const errorMessage = `API call to ${url.toString()} failed with an exception: ${error.message}`;
+      var errorMessage = `API call to ${method} ${url.toString()} failed with an exception: ${error.message}` ;
       this.logger.error(errorMessage, error.stack);
 
+      errorMessage +=  body ? `\nBODY:\n${body}` : '' + `\n${error.stack}`;
+
+      const html = buildEmailErrorHtml("Helios error", nl2br(errorMessage));
       await this.googleService.sendEmail(
           'ict@gezc.org',
           'Helios2Email API Exception',
-          errorMessage
+          html
       );
       throw new HttpException(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -109,10 +114,12 @@ export class APIService {
     const errorMessage = `API call failed with status ${response.status} ${response.statusText} for ${url}. Description: ${description}`;
     this.logger.error(errorMessage);
 
+    const html = buildEmailErrorHtml("Helios error", nl2br(errorMessage));
+
     await this.googleService.sendEmail(
         'ict@gezc.org',
         'Helios2Email API Error',
-        errorMessage
+        html
     );
 
     throw error;

@@ -1,24 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import * as fs from 'node:fs';
-import { escapeHtml } from '../common/html.util';
+import { escapeHtml, loadTemplate, renderTemplate} from '../common/html.util';
 import { StartlijstRecord } from '../helios/services/startlijst.service';
 
+/**
+ * Bouwer voor logboek e-mails, die HTML genereert voor dagelijkse logboek rapporten.
+ */
 @Injectable()
 export class LogboekMailBuilder
 {
 
+  /**
+   * Bouwt de HTML pagina voor de logboek e-mail met naam, datum en vluchten.
+   */
   buildHtml(input: { voornaam: string; datumString: string; vluchten: StartlijstRecord[] }): string {
-    var html = fs.readFileSync(`${process.env.TEMPLATE_PATH}/logboek.html`, 'utf8');
-    const base64img = fs.readFileSync('./templates/gezc-logo.png', {encoding: 'base64'});
-    html = html.replaceAll(/\{base64img}/g, base64img);
-
-    html = html.replaceAll(/\{VOORNAAM}/g, escapeHtml(input.voornaam));
-    html = html.replaceAll(/\{DATUM_STRING}/g, escapeHtml(input.datumString));
-    html = html.replaceAll(/\{LOGBOEK_REGELS}/g, this.buildRows(input.vluchten));
-    html = html.replaceAll(/\{STYLE}/g, this.tableSyle());
-    return html;
+     // Vervang placeholders door echte waarden
+     const inhoud =
+       {
+         VOORNAAM: escapeHtml(input.voornaam),
+         DATUM_STRING: escapeHtml(input.datumString),
+         LOGBOEK_REGELS: this.buildRows(input.vluchten),
+         STYLE: this.tableSyle()
+       }
+    return renderTemplate(loadTemplate('logboek.html'), inhoud);
   }
 
+  /**
+   * Genereert HTML rijen voor elke vlucht in het logboek. Iedere rij is een vlucht
+   */
   buildRows(vluchten: StartlijstRecord[]): string {
     return vluchten.map((vlucht) => {
       const d = (vlucht.DATUM || '').split('-');
@@ -39,6 +47,9 @@ export class LogboekMailBuilder
     }).join('\n');
   }
 
+  /**
+   * Geeft de CSS stijl voor tabel cellen terug.
+   */
   tableSyle(): string {
     return "style=\"border:1px solid #333; padding:6px 8px;\"";
   }

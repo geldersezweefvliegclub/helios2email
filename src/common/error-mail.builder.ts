@@ -1,16 +1,10 @@
-import { Injectable } from '@nestjs/common';
-import * as fs from 'node:fs';
-import { escapeHtml } from './html.util';
+import {escapeHtml, loadTemplate, renderTemplate} from './html.util';
 
-
-
+/**
+ * Bouwt een HTML e-mail voor foutmeldingen met een titel en inhoud.
+ * {TITEL} en {INHOUD} zijn placeholders in de template
+ * Vervangt speciale tekens in de titel en inhoud door hun HTML-escaped equivalenten om te voorkomen dat er ongewenste HTML-injecties plaatsvinden.
+ */
 export function buildEmailErrorHtml(titel: string, inhoud: string): string {
-      let html = fs.readFileSync(`${process.env.TEMPLATE_PATH}/error-email.html`, 'utf8');
-      const base64img = fs.readFileSync('./templates/gezc-logo.png', {encoding: 'base64'});
-
-      html = html.replaceAll(/\{base64img}/g, base64img);
-      html = html.replaceAll(/\{TITEL}/g, escapeHtml(titel));
-      html = html.replaceAll(/\{INHOUD}/g, escapeHtml(inhoud));
-      return html;
-   }
-
+      return renderTemplate(loadTemplate('error-email.html'), { TITEL: escapeHtml(titel), INHOUD: escapeHtml(inhoud) });
+}
