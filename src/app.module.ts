@@ -11,6 +11,7 @@ import {LogboekModule} from "./dagelijks-logboek/logboek.module";
 import {VluchtGeenMedicalModule} from "./vlucht_geen_medical/vlucht-geen-medical.module";
 import {MedicalVerlopenModule} from "./medical_verlopen/medical-verlopen.module";
 import {RollendModule} from "./rollend/rollend.module";
+import {VliegendModule} from "./vliegend/vliegend.module";
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import {RollendModule} from "./rollend/rollend.module";
         CRON_MEDICAL_VERLOPEN: Joi.string().optional(),
         CRON_VLUCHT_BEVOEGHEID: Joi.string().optional(),
         CRON_ROLLEND: Joi.string().optional(),
+        CRON_VLIEGEND: Joi.string().optional(),
         CRON_PENNINGMEESTER: Joi.string().optional(),
         CRON_HERINNERING_DAGINFO: Joi.string().optional(),
         CRON_HERINNERING_DIENSTEN: Joi.string().optional(),
@@ -40,6 +42,7 @@ import {RollendModule} from "./rollend/rollend.module";
         CIMT_EMAIL: Joi.string().email().optional(),
         ICT_EMAIL: Joi.string().email().optional(),
         ROLLEND_EMAIL: Joi.string().email().optional(),
+        VLIEGEND_EMAIL: Joi.string().email().optional(),
       })
     }),
     ScheduleModule.forRoot(),
@@ -50,6 +53,7 @@ import {RollendModule} from "./rollend/rollend.module";
     VluchtGeenMedicalModule,
     MedicalVerlopenModule,
     RollendModule,
+    VliegendModule,
     HerinneringDienstenModule,
     HerinneringDagrapportModule
   ]
