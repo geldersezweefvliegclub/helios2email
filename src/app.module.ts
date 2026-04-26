@@ -9,6 +9,7 @@ import { HerinneringDagrapportModule } from './herinnering_dagrapport/herinnerin
 import { HerinneringDienstenModule } from "./herinnering_diensten/herinnering-diensten.module";
 import {LogboekModule} from "./dagelijks-logboek/logboek.module";
 import {VluchtGeenMedicalModule} from "./vlucht_geen_medical/vlucht-geen-medical.module";
+import {MedicalVerlopenModule} from "./medical_verlopen/medical-verlopen.module";
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import {VluchtGeenMedicalModule} from "./vlucht_geen_medical/vlucht-geen-medical
         CRON_DAGINFO: Joi.string().optional(),
         CRON_LOGBOEK: Joi.string().optional(),
         CRON_VLUCHT_GEEN_MEDICAL: Joi.string().optional(),
+        CRON_MEDICAL_VERLOPEN: Joi.string().optional(),
         CRON_VLUCHT_BEVOEGHEID: Joi.string().optional(),
         CRON_PENNINGMEESTER: Joi.string().optional(),
         CRON_HERINNERING_DAGINFO: Joi.string().optional(),
@@ -43,6 +45,7 @@ import {VluchtGeenMedicalModule} from "./vlucht_geen_medical/vlucht-geen-medical
     LogboekModule,
     DagrapportModule,
     VluchtGeenMedicalModule,
+    MedicalVerlopenModule,
     HerinneringDienstenModule,
     HerinneringDagrapportModule
   ]

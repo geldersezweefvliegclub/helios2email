@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { APIService } from './api.service';
+import { HeliosLidTypes } from '../helios.types';
 
 export interface HeliosDatasetResponse<T> {
   totaal?: number;
@@ -39,5 +40,24 @@ export class LedenService {
     return this.apiService.get<LidRecord>('Leden/GetObject', {
       ID: id
     });
+  }
+
+  /**
+   * Haalt alle leden op die in aanmerking komen voor een medical herinnering.
+   * Filtert op de lidtypes ERELID, LID, JEUGDLID en PRIVATE_OWNER.
+   */
+  async getLedenMetMedical(): Promise<LidRecord[]> {
+    const types = [
+      HeliosLidTypes.ERELID,
+      HeliosLidTypes.LID,
+      HeliosLidTypes.JEUGDLID,
+      HeliosLidTypes.STUDENTENLID,
+      HeliosLidTypes.PRIVATE_OWNER
+    ].join(',');
+
+    const response = await this.apiService.get<HeliosDatasetResponse<LidRecord>>('Leden/GetObjects', {
+      TYPES: types,
+    });
+    return response.dataset ?? [];
   }
 }
