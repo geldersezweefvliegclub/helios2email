@@ -35,3 +35,17 @@ export enum HeliosDienstenTypes {
    EERSTE_GASTENVLIEGER = 1813,
    TWEEDE_GASTENVLIEGER = 1814,
 }
+
+export enum HeliosVliegveldTypes {
+   Terlet = 901,
+   Elders = 904,
+}
+
+export enum HeliosStartMethodeTypes {
+   Slepen = 501,
+   Sleepkist = 502,
+   Zelfstart = 506,
+   TMG = 507,
+   Overig = 508,
+   Lieren = 550
+}

@@ -15,6 +15,8 @@ export interface LidRecord {
   EMAIL: string;
   EMAIL_DAGINFO?: boolean;
   LIDTYPE_ID?: number;
+  LIDTYPE?: string;
+  ZUSTERCLUB?: string;
   MEDICAL?: string;
 }
 
@@ -40,6 +42,24 @@ export class LedenService {
     return this.apiService.get<LidRecord>('Leden/GetObject', {
       ID: id
     });
+  }
+
+  /**
+   * Haalt meerdere leden tegelijk op via de GetObjects API met een ID lijst als CSV string.
+   * Veel efficienter dan per ID een aparte call doen, zeker bij grote aantallen.
+   * Geeft een lege array terug als er geen IDs zijn meegegeven.
+   */
+  async getLedenByIds(ids: number[]): Promise<LidRecord[]> {
+    if (ids.length === 0) {
+      return [];
+    }
+
+    // De API verwacht de IDs als comma-separated string in het ID parameter
+    const idCsv = ids.join(',');
+    const response = await this.apiService.get<HeliosDatasetResponse<LidRecord>>('Leden/GetObjects', {
+      ID: idCsv
+    });
+    return response.dataset ?? [];
   }
 
   /**

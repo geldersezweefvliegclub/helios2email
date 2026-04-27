@@ -13,6 +13,8 @@ import {MedicalVerlopenModule} from "./e-mail/medical_verlopen/medical-verlopen.
 import {RollendModule} from "./e-mail/rollend/rollend.module";
 import {VliegendModule} from "./e-mail/vliegend/vliegend.module";
 import {VeiligheidModule} from "./e-mail/veiligheidsmanager/veiligheid.module";
+import {SvsModule} from "./e-mail/svs/svs.module";
+import {PenningmeesterModule} from "./e-mail/penningmeester/penningmeester.module";
 
 @Module({
   imports: [
@@ -32,6 +34,7 @@ import {VeiligheidModule} from "./e-mail/veiligheidsmanager/veiligheid.module";
         CRON_ROLLEND: Joi.string().optional(),
         CRON_VLIEGEND: Joi.string().optional(),
         CRON_VEILIGHEIDSMANAGER: Joi.string().optional(),
+        CRON_SVS: Joi.string().optional(),
         CRON_PENNINGMEESTER: Joi.string().optional(),
         CRON_HERINNERING_DAGINFO: Joi.string().optional(),
         CRON_HERINNERING_DIENSTEN: Joi.string().optional(),
@@ -46,6 +49,7 @@ import {VeiligheidModule} from "./e-mail/veiligheidsmanager/veiligheid.module";
         ROLLEND_EMAIL: Joi.string().email().optional(),
         VLIEGEND_EMAIL: Joi.string().email().optional(),
         VEILIGHEID_EMAIL: Joi.string().email().optional(),
+        SVS_EMAIL: Joi.string().email().optional(),
       })
     }),
     ScheduleModule.forRoot(),
@@ -58,6 +62,8 @@ import {VeiligheidModule} from "./e-mail/veiligheidsmanager/veiligheid.module";
     RollendModule,
     VliegendModule,
     VeiligheidModule,
+    SvsModule,
+    PenningmeesterModule,
     HerinneringDienstenModule,
     HerinneringDagrapportModule
   ]

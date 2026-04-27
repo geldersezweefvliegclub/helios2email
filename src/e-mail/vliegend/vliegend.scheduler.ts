@@ -3,8 +3,8 @@ import { Cron } from '@nestjs/schedule';
 import { VliegendWorkflowService } from './vliegend-workflow.service';
 
 // Cron expressie voor de vliegend scheduler.
-// Standaard waarde: dagelijks om 23:00 uur (0 23 * * *)
-const CRON_EXPRESSION = process.env.CRON_VLIEGEND || '0 23 * * *';
+// Standaard waarde: dagelijks om 23:05 uur (5 23 * * *)
+const CRON_EXPRESSION = process.env.CRON_VLIEGEND || '5 23 * * *';
 
 /**
  * Scheduler voor het versturen van een rapportage naar de commissaris vliegend met opmerkingen

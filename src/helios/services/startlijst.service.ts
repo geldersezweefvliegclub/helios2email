@@ -10,10 +10,16 @@ export interface StartlijstRecord {
   VLIEGTUIG_ID?: number;
   VLIEGTUIG?: string;
   VLIEGERNAAM?: string;
+  VLIEGERNAAM_LID?: string;
   INZITTENDENAAM?: string;
+  INZITTENDENAAM_LID?: string;
   REG_CALL?: string;
   VELD?: string;
+  VELD_ID?: number;
   STARTMETHODE?: string;
+  STARTMETHODE_ID?: number;
+  SLEEPKIST?: string;
+  SLEEP_HOOGTE?: string;
   LANDINGSTIJD?: string;
   DUUR?: string;
   OPMERKINGEN?: string;

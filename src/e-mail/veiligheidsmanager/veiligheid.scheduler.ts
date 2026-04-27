@@ -3,8 +3,8 @@ import { Cron } from '@nestjs/schedule';
 import { VeiligheidWorkflowService } from './veiligheid-workflow.service';
 
 // Cron expressie voor de veiligheidsmanager scheduler.
-// Standaard waarde: dagelijks om 23:00 uur (0 23 * * *)
-const CRON_EXPRESSION = process.env.CRON_VEILIGHEIDSMANAGER || '0 23 * * *';
+// Standaard waarde: dagelijks om 23:10 uur (10 23 * * *)
+const CRON_EXPRESSION = process.env.CRON_VEILIGHEIDSMANAGER || '10 23 * * *';
 
 /**
  * Scheduler voor het versturen van een rapportage naar de veiligheidsmanager met incidenten
