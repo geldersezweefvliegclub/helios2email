@@ -1,3 +1,6 @@
+// .env zo vroeg mogelijk inladen, zodat top-level process.env reads
+// (zoals CRON_ROLLEND in de schedulers) de waarden uit het .env bestand zien.
+import 'dotenv/config';
 import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
 import { Logger } from '@nestjs/common';

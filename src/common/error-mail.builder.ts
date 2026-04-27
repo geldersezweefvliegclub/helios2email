@@ -6,5 +6,5 @@ import {escapeHtml, loadTemplate, renderTemplate} from './html.util';
  * Vervangt speciale tekens in de titel en inhoud door hun HTML-escaped equivalenten om te voorkomen dat er ongewenste HTML-injecties plaatsvinden.
  */
 export function buildEmailErrorHtml(titel: string, inhoud: string): string {
-      return renderTemplate(loadTemplate('error-email.html'), { TITEL: escapeHtml(titel), INHOUD: escapeHtml(inhoud) });
+      return renderTemplate(loadTemplate('error-e-mail.html'), { TITEL: escapeHtml(titel), INHOUD: escapeHtml(inhoud) });
 }

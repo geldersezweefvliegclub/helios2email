@@ -4,14 +4,15 @@ import { ScheduleModule } from '@nestjs/schedule';
 import * as Joi from 'joi';
 import { HeliosModule } from './helios/helios.module';
 import { GoogleModule } from './google/google.module';
-import { DagrapportModule } from './dagrapport/dagrapport.module';
-import { HerinneringDagrapportModule } from './herinnering_dagrapport/herinnering-dagrapport.module';
-import { HerinneringDienstenModule } from "./herinnering_diensten/herinnering-diensten.module";
-import {LogboekModule} from "./dagelijks-logboek/logboek.module";
-import {VluchtGeenMedicalModule} from "./vlucht_geen_medical/vlucht-geen-medical.module";
-import {MedicalVerlopenModule} from "./medical_verlopen/medical-verlopen.module";
-import {RollendModule} from "./rollend/rollend.module";
-import {VliegendModule} from "./vliegend/vliegend.module";
+import { DagrapportModule } from './e-mail/dagrapport/dagrapport.module';
+import { HerinneringDagrapportModule } from './e-mail/herinnering_dagrapport/herinnering-dagrapport.module';
+import { HerinneringDienstenModule } from "./e-mail/herinnering_diensten/herinnering-diensten.module";
+import {LogboekModule} from "./e-mail/dagelijks-logboek/logboek.module";
+import {VluchtGeenMedicalModule} from "./e-mail/vlucht_geen_medical/vlucht-geen-medical.module";
+import {MedicalVerlopenModule} from "./e-mail/medical_verlopen/medical-verlopen.module";
+import {RollendModule} from "./e-mail/rollend/rollend.module";
+import {VliegendModule} from "./e-mail/vliegend/vliegend.module";
+import {VeiligheidModule} from "./e-mail/veiligheidsmanager/veiligheid.module";
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import {VliegendModule} from "./vliegend/vliegend.module";
         CRON_VLUCHT_BEVOEGHEID: Joi.string().optional(),
         CRON_ROLLEND: Joi.string().optional(),
         CRON_VLIEGEND: Joi.string().optional(),
+        CRON_VEILIGHEIDSMANAGER: Joi.string().optional(),
         CRON_PENNINGMEESTER: Joi.string().optional(),
         CRON_HERINNERING_DAGINFO: Joi.string().optional(),
         CRON_HERINNERING_DIENSTEN: Joi.string().optional(),
@@ -43,6 +45,7 @@ import {VliegendModule} from "./vliegend/vliegend.module";
         ICT_EMAIL: Joi.string().email().optional(),
         ROLLEND_EMAIL: Joi.string().email().optional(),
         VLIEGEND_EMAIL: Joi.string().email().optional(),
+        VEILIGHEID_EMAIL: Joi.string().email().optional(),
       })
     }),
     ScheduleModule.forRoot(),
@@ -54,6 +57,7 @@ import {VliegendModule} from "./vliegend/vliegend.module";
     MedicalVerlopenModule,
     RollendModule,
     VliegendModule,
+    VeiligheidModule,
     HerinneringDienstenModule,
     HerinneringDagrapportModule
   ]
