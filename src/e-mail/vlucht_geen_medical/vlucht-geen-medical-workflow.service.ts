@@ -58,10 +58,16 @@ export class VluchtGeenMedicalWorkflowService {
       selfPicLeden.add(start.VLIEGER_ID);
     }
 
-    for (const lidId of selfPicLeden) {
-      const lid = await this.ledenService.getLidById(lidId);
+    if (selfPicLeden.size === 0) {
+      this.logger.log('Geen self-PIC vluchten gevonden, geen medical check nodig.');
+      return;
+    }
 
-      if (!this.requiresMedicalReminder(lid)) {
+    // Eén batch call naar de leden API met alle vlieger IDs als CSV string,
+    const vliegers = await this.ledenService.getLedenByIds([...selfPicLeden]);
+
+    for (const vlieger of vliegers) {
+      if (!this.requiresMedicalReminder(vlieger)) {
         continue;
       }
 
@@ -69,41 +75,41 @@ export class VluchtGeenMedicalWorkflowService {
       today.setHours(0, 0, 0, 0); // Om alleen op datum te vergelijken, zonder rekening te houden met tijd
 
       let shouldSendEmail = false;
-      if (!lid.MEDICAL) {
-        this.logger.log(`Lid ${lid.ID} heeft geen medical datum. Verstuur email.`);
+      if (!vlieger.MEDICAL) {
+        this.logger.log(`Lid ${vlieger.ID} heeft geen medical datum. Verstuur email.`);
         shouldSendEmail = true;
       } else {
-        const medicalDate = new Date(lid.MEDICAL);
+        const medicalDate = new Date(vlieger.MEDICAL);
         if (medicalDate < today) {
-          this.logger.log(`Lid ${lid.ID} heeft een verlopen medical (${lid.MEDICAL}). Verstuur email.`);
+          this.logger.log(`Lid ${vlieger.ID} heeft een verlopen medical (${vlieger.MEDICAL}). Verstuur email.`);
           shouldSendEmail = true;
         }
       }
       if (shouldSendEmail) {
         // Als er geen e-mail adres bekend is, kunnen we ook geen e-mail sturen. Informeer ICT en CIMT, actie is nodig
-        if (!lid.EMAIL) {
-          const html = buildEmailErrorHtml("Medical, geen e-mail", `<p>${lid.NAAM} heeft gevlogen op ${datum} zonder geldig medical, maar heeft geen emailadres. Onderneem aktie</p>`);
+        if (!vlieger.EMAIL) {
+          const html = buildEmailErrorHtml("Medical, geen e-mail", `<p>${vlieger.NAAM} heeft gevlogen op ${datum} zonder geldig medical, maar heeft geen emailadres. Onderneem aktie</p>`);
           await this.googleService.sendHtmlEmail({
             to: process.env.ICT || 'ict@gezc.org',
             cc: [process.env.CIMT_EMAIL || 'cimt@gezc.org'],
             subject: 'Medical, e-mail ontbeekt',
             html
           });
-          this.logger.warn(`${lid.NAAM} heeft geen email address. Mail naar ICT en CIMT gestuurd`);
+          this.logger.warn(`${vlieger.NAAM} heeft geen email address. Mail naar ICT en CIMT gestuurd`);
         }
         else
         {
           // Bouw de e-mail inhoud
-          const html = this.mailBuilder.buildHtml(lid.VOORNAAM || lid.NAAM || '');
+          const html = this.mailBuilder.buildHtml(vlieger.VOORNAAM || vlieger.NAAM || '');
 
           // Verstuur de mail via de Google api
           await this.googleService.sendHtmlEmail({
-            to: lid.EMAIL,
+            to: vlieger.EMAIL,
             cc: [process.env.CIMT_EMAIL || 'cimt@gezc.org'],
             subject: 'Medical',
             html
           });
-          this.logger.log(`Medical herinnering voor ${lid.NAAM} gestuurd naar ${lid.EMAIL}`);
+          this.logger.log(`Medical herinnering voor ${vlieger.NAAM} gestuurd naar ${vlieger.EMAIL}`);
         }
       }
     }
