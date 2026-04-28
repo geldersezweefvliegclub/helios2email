@@ -15,6 +15,7 @@ import {VliegendModule} from "./e-mail/vliegend/vliegend.module";
 import {VeiligheidModule} from "./e-mail/veiligheidsmanager/veiligheid.module";
 import {SvsModule} from "./e-mail/svs/svs.module";
 import {PenningmeesterModule} from "./e-mail/penningmeester/penningmeester.module";
+import {DdwvModule} from "./e-mail/ddwv/ddwv.module";
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import {PenningmeesterModule} from "./e-mail/penningmeester/penningmeester.modul
         CRON_VEILIGHEIDSMANAGER: Joi.string().optional(),
         CRON_SVS: Joi.string().optional(),
         CRON_PENNINGMEESTER: Joi.string().optional(),
+        CRON_DDWV: Joi.string().optional(),
         CRON_HERINNERING_DAGINFO: Joi.string().optional(),
         CRON_HERINNERING_DIENSTEN: Joi.string().optional(),
         CRON_TIMEZONE: Joi.string().optional(),
@@ -50,6 +52,7 @@ import {PenningmeesterModule} from "./e-mail/penningmeester/penningmeester.modul
         VLIEGEND_EMAIL: Joi.string().email().optional(),
         VEILIGHEID_EMAIL: Joi.string().email().optional(),
         SVS_EMAIL: Joi.string().email().optional(),
+        DDWV_EMAIL: Joi.string().email().optional(),
       })
     }),
     ScheduleModule.forRoot(),
@@ -64,6 +67,7 @@ import {PenningmeesterModule} from "./e-mail/penningmeester/penningmeester.modul
     VeiligheidModule,
     SvsModule,
     PenningmeesterModule,
+    DdwvModule,
     HerinneringDienstenModule,
     HerinneringDagrapportModule
   ]

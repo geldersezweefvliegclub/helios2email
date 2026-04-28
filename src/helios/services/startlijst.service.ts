@@ -24,6 +24,8 @@ export interface StartlijstRecord {
   DUUR?: string;
   OPMERKINGEN?: string;
   INSTRUCTIEVLUCHT?: boolean;
+  VLIEGER_LIDTYPE_ID?: number;
+  INZITTENDE_LIDTYPE_ID?: number;
 }
 
 @Injectable()
