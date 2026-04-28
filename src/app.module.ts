@@ -16,6 +16,7 @@ import {VeiligheidModule} from "./e-mail/veiligheidsmanager/veiligheid.module";
 import {SvsModule} from "./e-mail/svs/svs.module";
 import {PenningmeesterModule} from "./e-mail/penningmeester/penningmeester.module";
 import {DdwvModule} from "./e-mail/ddwv/ddwv.module";
+import {HerinneringDienstSmsModule} from "./sms/herinnering_diensten/herinnering-dienst-sms.module";
 
 @Module({
   imports: [
@@ -26,6 +27,10 @@ import {DdwvModule} from "./e-mail/ddwv/ddwv.module";
         GOOGLE_CREDENTIALS_PATH: Joi.string().required(),
         GOOGLE_ADMIN_EMAIL: Joi.string().email().required(),
         VERZENDEN_EMAIL: Joi.string().optional(),
+        VERZENDEN_SMS: Joi.string().optional(),
+
+        MESSAGEBIRD_API_KEY: Joi.string().optional(),
+        MESSAGEBIRD_ORIGINATOR: Joi.string().optional(),
 
         CRON_DAGINFO: Joi.string().optional(),
         CRON_LOGBOEK: Joi.string().optional(),
@@ -40,6 +45,7 @@ import {DdwvModule} from "./e-mail/ddwv/ddwv.module";
         CRON_DDWV: Joi.string().optional(),
         CRON_HERINNERING_DAGINFO: Joi.string().optional(),
         CRON_HERINNERING_DIENSTEN: Joi.string().optional(),
+        CRON_HERINNERING_DIENSTEN_SMS: Joi.string().optional(),
         CRON_TIMEZONE: Joi.string().optional(),
 
         DAGINFO_ALWAYS_TO: Joi.string().allow('').optional(),
@@ -68,6 +74,7 @@ import {DdwvModule} from "./e-mail/ddwv/ddwv.module";
     SvsModule,
     PenningmeesterModule,
     DdwvModule,
+    HerinneringDienstSmsModule,
     HerinneringDienstenModule,
     HerinneringDagrapportModule
   ]

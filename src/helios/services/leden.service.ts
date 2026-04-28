@@ -18,6 +18,7 @@ export interface LidRecord {
   LIDTYPE?: string;
   ZUSTERCLUB?: string;
   MEDICAL?: string;
+  MOBIEL?: string;
 }
 
 @Injectable()
