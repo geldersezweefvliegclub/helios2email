@@ -83,8 +83,8 @@ export class RollendWorkflowService {
         rollendMaterieel: resultaat.ROLLENDMATERIEEL || ''
       });
 
-      // Bepaal het e-mailadres van de commissaris rollend, met default rollend@gezc.org
-      const ontvanger = process.env.ROLLEND_EMAIL || 'rollend@gezc.org';
+      // Bepaal het e-mailadres van de commissaris rollend, met default comrijdendmaterieel@gezc.org
+      const ontvanger = process.env.ROLLEND_EMAIL || 'comrijdendmaterieel@gezc.org';
 
       // Verstuur de mail via de Google api
       await this.googleService.sendHtmlEmail({

@@ -59,8 +59,8 @@ export class SvsWorkflowService {
       starts: sleepstarts
     });
 
-    // Bepaal het e-mailadres van de SVS beheerder, met default
-    const ontvanger = process.env.SVS_EMAIL || 'slepen@gmail.com';
+    // Bepaal het e-mailadres van de SVS beheerder, met default vlieglijst@slepenopterlet.nl
+    const ontvanger = process.env.SVS_EMAIL || 'vlieglijst@slepenopterlet.nl';
 
     // Verstuur de mail via de Google api
     await this.googleService.sendHtmlEmail({

@@ -82,8 +82,8 @@ export class VliegendWorkflowService {
         vliegendMaterieel: resultaat.VLIEGENDMATERIEEL || ''
       });
 
-      // Bepaal het e-mailadres van de commissaris vliegend, met default vliegend@gezc.org
-      const ontvanger = process.env.VLIEGEND_EMAIL || 'vliegend@gezc.org';
+      // Bepaal het e-mailadres van de commissaris vliegend, met default comvliegendmaterieel@gezc.org
+      const ontvanger = process.env.VLIEGEND_EMAIL || 'comvliegendmaterieel@gezc.org';
 
       // Verstuur de mail via de Google api
       await this.googleService.sendHtmlEmail({
