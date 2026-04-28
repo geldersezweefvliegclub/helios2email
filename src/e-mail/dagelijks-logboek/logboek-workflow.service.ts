@@ -56,9 +56,9 @@ export class LogboekWorkflowService
         aanwezigen.add(start.INZITTENDE_ID);
       }
     }
+    const vliegers = await this.ledenService.getLedenByIds([...aanwezigen]);
 
-    for (const lidId of aanwezigen) {
-      const lid = await this.ledenService.getLidById(lidId);
+    for (const lid of vliegers) {
       const to = this.resolvePrimaryRecipient(lid);
 
       // Geen emailadres gevonden, mail naar ICT sturen zodat ze actie kunnen ondernemen
@@ -74,7 +74,7 @@ export class LogboekWorkflowService
       }
 
       // Ophalen logboek van de vlieger voor deze datum
-      const vluchten = await this.startlijstService.getLogboekVoorLid(lidId, datum);
+      const vluchten = await this.startlijstService.getLogboekVoorLid(lid.ID!, datum);
 
       // Dit mag niet voorkomen omdat we de ledenlijst op basis van de startlijst hebben samengesteld,
       // maar niet mailen als er geen starts zijn
