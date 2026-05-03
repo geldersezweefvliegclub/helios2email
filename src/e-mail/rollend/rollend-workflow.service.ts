@@ -67,6 +67,11 @@ export class RollendWorkflowService {
         continue;
       }
 
+      // Er is geen informatie over rollend materieel
+      if (!resultaat.ROLLENDMATERIEEL || resultaat.ROLLENDMATERIEEL.trim().length === 0) {
+        continue;
+      }
+
       // Als we voor deze datum al een mail hebben verstuurd, sla deze record over.
       // De audit records lopen op datum/tijd dus we hebben dan al de meest recente versie gemaild.
       if (verstuurdeDatums.has(resultaat.DATUM)) {

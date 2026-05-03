@@ -44,7 +44,7 @@ export class VeiligheidWorkflowService {
       return;
     }
 
-    // Per datum onthouden of we al een mail verstuurd hebben, zodat we maar 1 mail per dag versturen.
+    // Per datum onthouden of we al een mail verstuurd hebben, zodat we, maar 1 mail per dag versturen.
     // De laatste wijziging van die dag bevat de actuele tekst.
     const verstuurdeDatums = new Set<string>();
 
@@ -56,13 +56,18 @@ export class VeiligheidWorkflowService {
         continue;   // ongeldige audit record, kan niet verwerkt worden
       }
 
-      // De dagrapport is wel gewijzigd, maar er is geen aanpassing gemaakt aan incidenten
+      // Het dagrapport is wel gewijzigd, maar er is geen aanpassing gemaakt aan incidenten
       if (voor && voor.INCIDENTEN === resultaat.INCIDENTEN) {
         continue;
       }
 
       // Geen datum bekend in het audit record, kunnen we ook niet mailen
       if (!resultaat.DATUM) {
+        continue;
+      }
+
+      // Er zijn geen incidenten geweest.
+      if (!resultaat.INCIDENTEN || resultaat.INCIDENTEN.trim().length === 0) {
         continue;
       }
 
