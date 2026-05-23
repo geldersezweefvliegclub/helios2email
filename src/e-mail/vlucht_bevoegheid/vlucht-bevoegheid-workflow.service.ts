@@ -133,6 +133,7 @@ export class VluchtBevoegheidWorkflowService {
 
       // Verstuur e-mail
       await this.googleService.sendHtmlEmail({
+        from: process.env.CIMT_EMAIL,
         to: lid.EMAIL,
         cc: [process.env.CIMT_EMAIL || 'cimt@gezc.org'],
         subject: `Bevoegdheid ${callsigns} ${lid.NAAM}`,

@@ -90,6 +90,7 @@ export class VluchtGeenMedicalWorkflowService {
         if (!vlieger.EMAIL) {
           const html = buildEmailErrorHtml("Medical, geen e-mail", `<p>${vlieger.NAAM} heeft gevlogen op ${datum} zonder geldig medical, maar heeft geen emailadres. Onderneem aktie</p>`);
           await this.googleService.sendHtmlEmail({
+            from: process.env.CIMT_EMAIL,
             to: process.env.ICT || 'ict@gezc.org',
             cc: [process.env.CIMT_EMAIL || 'cimt@gezc.org'],
             subject: 'Medical, e-mail ontbeekt',

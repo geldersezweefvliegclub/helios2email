@@ -66,13 +66,15 @@ export class GoogleService {
     subject,
     html,
     cc,
-    bcc
+    bcc,
+    from,
   }: {
     to?: string;
     subject: string;
     html: string;
     cc?: string[];
     bcc?: string[];
+    from?: string;
   }): Promise<void> {
     if (process.env.VERZENDEN_EMAIL === 'false') {
       this.logger.log(`Email sending disabled. Would send to: to=${to}, cc=${cc}, bcc=${bcc}`);
@@ -80,7 +82,7 @@ export class GoogleService {
     }
 
     const gmail = await this.getGmailApi();
-    const headers = [`From: ${process.env.GOOGLE_ADMIN_EMAIL}`];
+    const headers = [`From: ${from ?? process.env.GOOGLE_ADMIN_EMAIL}`];
 
     if (to) {
       headers.push(`To: ${to}`);

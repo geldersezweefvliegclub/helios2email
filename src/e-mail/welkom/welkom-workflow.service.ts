@@ -9,6 +9,7 @@ import {
 } from '../../helios/mqtt/mqtt.events';
 import { GoogleService } from '../../google/google.service';
 import { WelkomMailBuilder } from './welkom-mail.builder';
+import {HeliosLidTypes} from "../../helios/helios.types";
 
 interface HeliosCacheEntry {
   event: HeliosRefLedenEvent;
@@ -86,6 +87,24 @@ export class WelkomWorkflowService
 
         if (isNieuweInlognaam && heeftWachtwoord) {
           const lid = helios.event.resultaat!;
+
+          switch (lid.LIDTYPE_ID) {
+            case HeliosLidTypes.STUDENTENLID:
+            case HeliosLidTypes.LID:
+            case HeliosLidTypes.DONATEUR:
+            case HeliosLidTypes.ERELID:
+            case HeliosLidTypes.JEUGDLID:
+            case HeliosLidTypes.PRIVATE_OWNER:
+            case HeliosLidTypes.VETERAAN:
+            case HeliosLidTypes.DDWV_VLIEGER:
+            {
+              break;
+            }
+            default:
+              this.logger.log(`Geen welkom email nodig ${lid.EMAIL} (${lid.INLOGNAAM})`);
+              return;
+          }
+
           if (!lid.EMAIL) {
             this.logger.warn(`Lid ${lid.INLOGNAAM} heeft geen e-mailadres, welkomstmail niet verstuurd`);
           } else {
@@ -96,6 +115,7 @@ export class WelkomWorkflowService
               wachtwoord: sync.event.lid.INGEVOERD_WACHTWOORD!,
             });
             await this.googleService.sendHtmlEmail({
+              from: process.env.ICT_EMAIL,
               to: lid.EMAIL,
               subject: 'Welkom bij de Gelderse Zweefvliegclub',
               html,
