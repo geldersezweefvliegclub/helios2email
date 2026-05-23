@@ -115,7 +115,7 @@ export class WelkomWorkflowService
               wachtwoord: sync.event.lid.INGEVOERD_WACHTWOORD!,
             });
             await this.googleService.sendHtmlEmail({
-              from: process.env.ICT_EMAIL,
+              from: process.env.ICT || 'ict@gezc.org',
               to: lid.EMAIL,
               subject: 'Welkom bij de Gelderse Zweefvliegclub',
               html,

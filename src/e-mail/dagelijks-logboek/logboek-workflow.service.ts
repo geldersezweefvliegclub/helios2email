@@ -65,6 +65,7 @@ export class LogboekWorkflowService
       if (!to) {
         const html = buildEmailErrorHtml("Logboek, geen e-mail", `<p>${lid.NAAM} heeft gevlogen op ${datum}, maar heeft geen emailadres. Onderneem aktie</p>`);
         await this.googleService.sendHtmlEmail({
+          from: process.env.ICT || 'ict@gezc.org',
           to: process.env.ICT || 'ict@gezc.org',
           subject: 'Logboek, e-mail ontbeekt',
           html
