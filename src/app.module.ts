@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ScheduleModule } from '@nestjs/schedule';
 import * as Joi from 'joi';
 import { HeliosModule } from './helios/helios.module';
@@ -17,6 +18,8 @@ import {SvsModule} from "./e-mail/svs/svs.module";
 import {PenningmeesterModule} from "./e-mail/penningmeester/penningmeester.module";
 import {DdwvModule} from "./e-mail/ddwv/ddwv.module";
 import {HerinneringDienstSmsModule} from "./sms/herinnering_diensten/herinnering-dienst-sms.module";
+import {MqttModule} from "./helios/mqtt/mqtt.module";
+import {WelkomModule} from "./e-mail/welkom/welkom.module";
 
 @Module({
   imports: [
@@ -59,8 +62,14 @@ import {HerinneringDienstSmsModule} from "./sms/herinnering_diensten/herinnering
         VEILIGHEID_EMAIL: Joi.string().email().optional(),
         SVS_EMAIL: Joi.string().email().optional(),
         DDWV_EMAIL: Joi.string().email().optional(),
+
+        MQTT_BROKER_URL: Joi.string().optional(),
+        MQTT_TOPIC: Joi.string().optional(),
+        MQTT_USERNAME: Joi.string().allow('').optional(),
+        MQTT_PASSWORD: Joi.string().allow('').optional(),
       })
     }),
+    EventEmitterModule.forRoot(),
     ScheduleModule.forRoot(),
     HeliosModule,
     GoogleModule,
@@ -75,6 +84,8 @@ import {HerinneringDienstSmsModule} from "./sms/herinnering_diensten/herinnering
     PenningmeesterModule,
     DdwvModule,
     HerinneringDienstSmsModule,
+    MqttModule,
+    WelkomModule,
     HerinneringDienstenModule,
     HerinneringDagrapportModule
   ]

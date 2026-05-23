@@ -1,3 +1,65 @@
+export interface HeliosLid {
+  ID: number;
+  NAAM: string;
+  VOORNAAM: string | null;
+  TUSSENVOEGSEL: string | null;
+  ACHTERNAAM: string | null;
+  ADRES: string | null;
+  POSTCODE: string | null;
+  WOONPLAATS: string | null;
+  TELEFOON: string | null;
+  MOBIEL: string | null;
+  NOODNUMMER: string | null;
+  EMAIL: string | null;
+  LIDNR: string | null;
+  LIDTYPE_ID: number;
+  STATUSTYPE_ID: number | null;
+  ZUSTERCLUB_ID: number | null;
+  BUDDY_ID: number | null;
+  BUDDY_ID2: number | null;
+  LIERIST: boolean;
+  LIERIST_IO: boolean;
+  STARTLEIDER: boolean;
+  INSTRUCTEUR: boolean;
+  CIMT: boolean;
+  DDWV_CREW: boolean;
+  DDWV_BEHEERDER: boolean;
+  BEHEERDER: boolean;
+  STARTTOREN: boolean;
+  ROOSTER: boolean;
+  SLEEPVLIEGER: boolean;
+  RAPPORTEUR: boolean;
+  GASTENVLIEGER: boolean;
+  TECHNICUS: boolean;
+  CLUBBLAD_POST: boolean;
+  ZELFSTART_ABONNEMENT: boolean;
+  MEDICAL: string | null;
+  GEBOORTE_DATUM: string | null;
+  INLOGNAAM: string;
+  AUTH: boolean;
+  AVATAR: string | null;
+  STARTVERBOD: boolean;
+  OPGEZEGD: boolean;
+  PRIVACY: boolean;
+  SLEUTEL1: string | null;
+  SLEUTEL2: string | null;
+  BEROEP: string | null;
+  KNVVL_LIDNUMMER: string | null;
+  BREVET_NUMMER: string | null;
+  EMAIL_DAGINFO: boolean;
+  OPMERKINGEN: string | null;
+  TEGOED: number;
+  VERWIJDERD: boolean;
+  LAATSTE_AANPASSING: string;
+  PAX: boolean;
+  LIDTYPE: string | null;
+  LIDTYPE_REF: string | null;
+  STATUS: string | null;
+  ZUSTERCLUB: string | null;
+  BUDDY: string | null;
+  BUDDY2: string | null;
+}
+
 export enum HeliosLidTypes {
    STUDENTENLID = 600,
    ERELID = 601,
