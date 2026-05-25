@@ -1,9 +1,9 @@
 import { Injectable, Logger, OnApplicationBootstrap, OnApplicationShutdown } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import * as mqtt from 'mqtt';
-import { RawHeliosMqttMessage, RawSyncInnerData, RawSyncMessage } from './mqtt.types';
+import { RawHeliosMqttMessage } from './mqtt.types';
 import { HeliosLid } from '../helios.types';
-import { HELIOS_REF_LEDEN, SYNC_REF_LEDEN, HeliosRefLedenEvent, SyncRefLedenEvent } from './mqtt.events';
+import { HELIOS_REF_LEDEN, HeliosRefLedenEvent } from './mqtt.events';
 
 @Injectable()
 export class MqttService implements OnApplicationBootstrap, OnApplicationShutdown {
@@ -34,8 +34,6 @@ export class MqttService implements OnApplicationBootstrap, OnApplicationShutdow
     this.client.on('message', (receivedTopic, payload) => {
       if (receivedTopic === 'gezc/helios') {
         this.handleHeliosMessage(payload);
-      } else if (receivedTopic === 'gezc/sync') {
-        this.handleSyncMessage(payload);
       } else {
         this.logger.debug(`Onbekend topic: ${receivedTopic}`);
       }
@@ -80,35 +78,4 @@ export class MqttService implements OnApplicationBootstrap, OnApplicationShutdow
     }
   }
 
-  // ── gezc/sync ────────────────────────────────────────────────────────────────
-
-  private handleSyncMessage(payload: Buffer): void {
-    let outer: RawSyncMessage;
-    try {
-      outer = JSON.parse(payload.toString());
-    } catch {
-      this.logger.error(`Ongeldig JSON op gezc/sync: ${payload.toString()}`);
-      return;
-    }
-
-    if (outer.table && outer.table !== 'ref_leden') return;
-
-    let inner: RawSyncInnerData;
-    try {
-      inner = JSON.parse(outer.data);
-    } catch {
-      this.logger.error(`Ongeldig inner JSON op gezc/sync: ${outer.data}`);
-      return;
-    }
-
-    this.logger.log(`sync: ${outer.type} voor ${inner.DATA.NAAM} (${inner.DATA.INLOGNAAM})`);
-
-    switch (outer.type) {
-      case 'sync_leden':
-        this.eventEmitter.emit(SYNC_REF_LEDEN, new SyncRefLedenEvent(inner.DATA));
-        break;
-      default:
-        this.logger.debug(`Geen handler voor sync type: ${outer.type}`);
-    }
-  }
 }
