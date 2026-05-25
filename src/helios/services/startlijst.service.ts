@@ -28,6 +28,30 @@ export interface StartlijstRecord {
   INZITTENDE_LIDTYPE_ID?: number;
 }
 
+export interface LogboekTotalenJaar {
+  STARTS?: number;
+  INSTRUCTIE_STARTS?: number;
+  INSTRUCTIE_UREN?: string;
+  VLIEGTIJD?: string;
+}
+
+export interface LogboekTotalenStart {
+  METHODE?: string;
+  AANTAL?: number;
+}
+
+export interface LogboekTotalenVliegtuig {
+  REG_CALL?: string;
+  STARTS?: number;
+}
+
+export interface LogboekTotalen {
+  totaal?: number;
+  starts?: LogboekTotalenStart[];
+  vliegtuigen?: LogboekTotalenVliegtuig[];
+  jaar?: LogboekTotalenJaar;
+}
+
 @Injectable()
 export class StartlijstService {
   constructor(private readonly apiService: APIService) {}
@@ -41,6 +65,13 @@ export class StartlijstService {
     return response.dataset ?? [];
   }
 
+
+  async getTotalen(lidId: number, jaar: number): Promise<LogboekTotalen> {
+    return this.apiService.get<LogboekTotalen>('Startlijst/GetLogboekTotalen', {
+      LID_ID: lidId,
+      JAAR: jaar,
+    });
+  }
 
   async getLogboekVoorLid(lidId: number, datum: string): Promise<StartlijstRecord[]> {
     const response = await this.apiService.get<HeliosDatasetResponse<StartlijstRecord>>('Startlijst/GetLogboek', {

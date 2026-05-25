@@ -103,6 +103,12 @@ export enum HeliosVliegveldTypes {
    Elders = 904,
 }
 
+export enum HeliosVliegstatusTypes {
+   DBO = 1901,
+   SOLIST = 1902,
+   BREVETHOUDER = 1903,
+}
+
 export enum HeliosStartMethodeTypes {
    Slepen = 501,
    Sleepkist = 502,

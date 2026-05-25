@@ -20,6 +20,7 @@ import {DdwvModule} from "./e-mail/ddwv/ddwv.module";
 import {HerinneringDienstSmsModule} from "./sms/herinnering_diensten/herinnering-dienst-sms.module";
 import {MqttModule} from "./helios/mqtt/mqtt.module";
 import {WelkomModule} from "./e-mail/welkom/welkom.module";
+import {DtoVluchtenModule} from "./e-mail/dto-vluchten/dto-vluchten.module";
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import {WelkomModule} from "./e-mail/welkom/welkom.module";
         CRON_DDWV: Joi.string().optional(),
         CRON_HERINNERING_DAGINFO: Joi.string().optional(),
         CRON_HERINNERING_DIENSTEN: Joi.string().optional(),
+        CRON_DTO_VLUCHTEN: Joi.string().optional(),
         CRON_HERINNERING_DIENSTEN_SMS: Joi.string().optional(),
         CRON_TIMEZONE: Joi.string().optional(),
 
@@ -62,6 +64,9 @@ import {WelkomModule} from "./e-mail/welkom/welkom.module";
         VEILIGHEID_EMAIL: Joi.string().email().optional(),
         SVS_EMAIL: Joi.string().email().optional(),
         DDWV_EMAIL: Joi.string().email().optional(),
+        BESTUUR_EMAIL: Joi.string().email().optional(),
+        DTO_EMAIL: Joi.string().email().optional(),
+        LEDEN_EMAIL: Joi.string().email().optional(),
 
         MQTT_BROKER_URL: Joi.string().optional(),
         MQTT_TOPIC: Joi.string().optional(),
@@ -86,6 +91,7 @@ import {WelkomModule} from "./e-mail/welkom/welkom.module";
     HerinneringDienstSmsModule,
     MqttModule,
     WelkomModule,
+    DtoVluchtenModule,
     HerinneringDienstenModule,
     HerinneringDagrapportModule
   ]

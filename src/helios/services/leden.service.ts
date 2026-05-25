@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { APIService } from './api.service';
-import { HeliosLidTypes } from '../helios.types';
+import { HeliosLidTypes, HeliosVliegstatusTypes } from '../helios.types';
 
 export interface HeliosDatasetResponse<T> {
   totaal?: number;
@@ -11,14 +11,21 @@ export interface HeliosDatasetResponse<T> {
 export interface LidRecord {
   ID?: number;
   VOORNAAM?: string;
+  TUSSENVOEGSEL?: string;
+  ACHTERNAAM?: string;
   NAAM: string;
   EMAIL: string;
   EMAIL_DAGINFO?: boolean;
+  LIDNR?: string;
   LIDTYPE_ID?: number;
   LIDTYPE?: string;
+  STATUSTYPE_ID?: number;
+  STATUS?: string;
   ZUSTERCLUB?: string;
   MEDICAL?: string;
+  TELEFOON?: string;
   MOBIEL?: string;
+  INLOGNAAM?: string;
 }
 
 @Injectable()
@@ -61,6 +68,27 @@ export class LedenService {
       ID: idCsv
     });
     return response.dataset ?? [];
+  }
+
+  /**
+   * Haalt alle leden op met vliegstatus DBO of Solist, gefilterd op relevante lidtypes.
+   * De API ondersteunt geen statusfilter, dus statusfiltering vindt client-side plaats.
+   */
+  async getLedenDTO(): Promise<LidRecord[]> {
+    const types = [
+      HeliosLidTypes.STUDENTENLID,
+      HeliosLidTypes.LID,
+      HeliosLidTypes.JEUGDLID,
+      HeliosLidTypes.VETERAAN,
+    ].join(',');
+
+    const response = await this.apiService.get<HeliosDatasetResponse<LidRecord>>('Leden/GetObjects', {
+      TYPES: types,
+    });
+    return (response.dataset ?? []).filter(lid =>
+      lid.STATUSTYPE_ID === HeliosVliegstatusTypes.DBO ||
+      lid.STATUSTYPE_ID === HeliosVliegstatusTypes.SOLIST
+    );
   }
 
   /**
