@@ -68,6 +68,10 @@ import {DtoVluchtenModule} from "./e-mail/dto-vluchten/dto-vluchten.module";
         DTO_EMAIL: Joi.string().email().optional(),
         LEDEN_EMAIL: Joi.string().email().optional(),
 
+        LOGGER_SERVER_URL: Joi.string().optional(),
+        LOGGER_API_KEY: Joi.string().optional(),
+        INSTANCE: Joi.string().optional(),
+
         MQTT_BROKER_URL: Joi.string().optional(),
         MQTT_TOPIC: Joi.string().optional(),
         MQTT_USERNAME: Joi.string().allow('').optional(),
