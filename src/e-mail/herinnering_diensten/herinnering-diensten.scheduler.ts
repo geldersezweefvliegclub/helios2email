@@ -13,7 +13,7 @@ export class HerinneringDienstenScheduler {
    * Initialiseert de HerinneringDienstenScheduler en logt de cron expressie.
    */
   constructor(private readonly workflow: HerinneringDienstenWorkflowService) {
-    this.logger.log(`Cron expression: ${process.env.CRON_HERINNERING_DIENSTEN || '0 19 * * *'}`);
+    this.logger.log(`${HerinneringDienstenScheduler.name}: Cron expression: ${process.env.CRON_HERINNERING_DIENSTEN || '0 19 * * *'}`);
   }
 
   /**

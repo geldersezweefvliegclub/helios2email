@@ -14,7 +14,7 @@ export class HerinneringDagrapportScheduler
    * Initialiseert de HerinneringDagrapportScheduler en logt de cron expressie.
    */
   constructor(private readonly workflow: HerinneringDagrapportWorkflowService) {
-    this.logger.log(`Cron expression: ${process.env.CRON_HERINNERING_DAGINFO || '30 19 * * *'}`);
+    this.logger.log(`${HerinneringDagrapportScheduler.name}: Cron expression: ${process.env.CRON_HERINNERING_DAGINFO || '30 19 * * *'}`);
   }
 
   /**

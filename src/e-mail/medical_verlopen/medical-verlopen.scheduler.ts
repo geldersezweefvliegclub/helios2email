@@ -18,7 +18,7 @@ export class MedicalVerlopenScheduler {
    * Initialiseert de MedicalVerlopenScheduler en logt de cron expressie.
    */
   constructor(private readonly workflow: MedicalVerlopenWorkflowService) {
-    this.logger.log(`Cron expressie: ${CRON_EXPRESSION}`);
+    this.logger.log(`${MedicalVerlopenScheduler.name}: Cron expressie: ${CRON_EXPRESSION}`);
   }
 
   /**

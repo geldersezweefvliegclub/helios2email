@@ -18,7 +18,7 @@ export class SvsScheduler {
    * Initialiseert de SvsScheduler en logt de cron expressie.
    */
   constructor(private readonly workflow: SvsWorkflowService) {
-    this.logger.log(`Cron expressie: ${CRON_EXPRESSION}`);
+    this.logger.log(`${SvsScheduler.name}: Cron expressie: ${CRON_EXPRESSION}`);
   }
 
   /**

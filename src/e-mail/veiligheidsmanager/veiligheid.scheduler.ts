@@ -18,7 +18,7 @@ export class VeiligheidScheduler {
    * Initialiseert de VeiligheidScheduler en logt de cron expressie.
    */
   constructor(private readonly workflow: VeiligheidWorkflowService) {
-    this.logger.log(`Cron expressie: ${CRON_EXPRESSION}`);
+    this.logger.log(`${VeiligheidScheduler.name}: Cron expressie: ${CRON_EXPRESSION}`);
   }
 
   /**

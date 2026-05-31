@@ -16,7 +16,7 @@ export class VluchtBevoegheidScheduler {
    * Initialiseert de VluchtBevoegdheidScheduler en logt de cron expressie.
    */
   constructor(private readonly workflow: VluchtBevoegheidWorkflowService) {
-    this.logger.log(`Cron expressie: ${CRON_EXPRESSION}`);
+    this.logger.log(`${VluchtBevoegheidScheduler.name}: Cron expressie: ${CRON_EXPRESSION}`);
   }
 
   /**

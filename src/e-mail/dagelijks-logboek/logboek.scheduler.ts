@@ -11,7 +11,7 @@ export class LogboekScheduler
   private readonly logger = new Logger(LogboekScheduler.name);
 
   constructor(private readonly workflow: LogboekWorkflowService) {
-    this.logger.log(`Cron expression: ${process.env.CRON_LOGBOEK || '0 22 * * *'}`);
+    this.logger.log(`${LogboekScheduler.name}: Cron expression: ${process.env.CRON_LOGBOEK || '0 22 * * *'}`);
   }
 
   /**

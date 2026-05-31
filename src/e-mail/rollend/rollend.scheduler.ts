@@ -18,7 +18,7 @@ export class RollendScheduler {
    * Initialiseert de RollendScheduler en logt de cron expressie.
    */
   constructor(private readonly workflow: RollendWorkflowService) {
-    this.logger.log(`Cron expressie: ${CRON_EXPRESSION}`);
+    this.logger.log(`${RollendScheduler.name}: Cron expressie: ${CRON_EXPRESSION}`);
   }
 
   /**

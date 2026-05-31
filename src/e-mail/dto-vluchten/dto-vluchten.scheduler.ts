@@ -11,7 +11,7 @@ export class DtoVluchtenScheduler {
   private readonly logger = new Logger(DtoVluchtenScheduler.name);
 
   constructor(private readonly workflow: DtoVluchtenWorkflowService) {
-    this.logger.log(`Cron expressie: ${CRON_EXPRESSION}`);
+    this.logger.log(`${DtoVluchtenScheduler.name}: Cron expressie: ${CRON_EXPRESSION}`);
   }
 
   @Cron(CRON_EXPRESSION, {

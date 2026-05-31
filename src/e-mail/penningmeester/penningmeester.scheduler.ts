@@ -18,7 +18,7 @@ export class PenningmeesterScheduler {
    * Initialiseert de PenningmeesterScheduler en logt de cron expressie.
    */
   constructor(private readonly workflow: PenningmeesterWorkflowService) {
-    this.logger.log(`Cron expressie: ${CRON_EXPRESSION}`);
+    this.logger.log(`${PenningmeesterScheduler.name}: Cron expressie: ${CRON_EXPRESSION}`);
   }
 
   /**

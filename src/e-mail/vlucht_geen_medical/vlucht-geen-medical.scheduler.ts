@@ -13,7 +13,7 @@ export class VluchtGeenMedicalScheduler {
    * Initialiseert de VluchtGeenMedicalScheduler en logt de cron expressie.
    */
   constructor(private readonly workflow: VluchtGeenMedicalWorkflowService) {
-    this.logger.log(`Cron expression: ${process.env.CRON_VLUCHT_GEEN_MEDICAL || '5 22 * * *'}`);
+    this.logger.log(`${VluchtGeenMedicalScheduler.name}: Cron expression: ${process.env.CRON_VLUCHT_GEEN_MEDICAL || '5 22 * * *'}`);
   }
 
   /**

@@ -18,7 +18,7 @@ export class DdwvScheduler {
    * Initialiseert de DdwvScheduler en logt de cron expressie.
    */
   constructor(private readonly workflow: DdwvWorkflowService) {
-    this.logger.log(`Cron expressie: ${CRON_EXPRESSION}`);
+    this.logger.log(`${DdwvScheduler.name}: Cron expressie: ${CRON_EXPRESSION}`);
   }
 
   /**

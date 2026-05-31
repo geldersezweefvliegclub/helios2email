@@ -18,7 +18,7 @@ export class VliegendScheduler {
    * Initialiseert de VliegendScheduler en logt de cron expressie.
    */
   constructor(private readonly workflow: VliegendWorkflowService) {
-    this.logger.log(`Cron expressie: ${CRON_EXPRESSION}`);
+    this.logger.log(`${VliegendScheduler.name}: Cron expressie: ${CRON_EXPRESSION}`);
   }
 
   /**

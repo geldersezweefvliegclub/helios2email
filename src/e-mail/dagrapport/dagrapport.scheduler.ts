@@ -11,7 +11,7 @@ export class DagrapportScheduler
   private readonly logger = new Logger(DagrapportScheduler.name);
 
   constructor(private readonly workflow: DagrapportWorkflowService) {
-    this.logger.log(`Cron expression: ${process.env.CRON_DAGINFO || '30 22 * * *'}`);
+    this.logger.log(`${DagrapportScheduler.name}: Cron expression: ${process.env.CRON_DAGINFO || '30 22 * * *'}`);
   }
 
   /**
