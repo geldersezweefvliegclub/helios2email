@@ -56,8 +56,18 @@ export class VeiligheidWorkflowService {
         continue;   // ongeldige audit record, kan niet verwerkt worden
       }
 
+      // Er is geen informatie over incidenten
+      if (!resultaat.INCIDENTEN || resultaat.INCIDENTEN.trim().length === 0) {
+        continue;
+      }
+
       // Het dagrapport is wel gewijzigd, maar er is geen aanpassing gemaakt aan incidenten
       if (voor && voor.INCIDENTEN === resultaat.INCIDENTEN) {
+        continue;
+      }
+
+      // Veiligheidsomschrijving moet meer dan 5 woorden bevatten
+      if (resultaat.INCIDENTEN.trim().split(/\s+/).length <= 5) {
         continue;
       }
 

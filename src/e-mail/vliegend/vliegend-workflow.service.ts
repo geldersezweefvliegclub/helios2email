@@ -71,6 +71,11 @@ export class VliegendWorkflowService {
         continue;
       }
 
+      // Vliegend materieel omschrijving moet meer dan 5 woorden bevatten
+      if (resultaat.VLIEGENDMATERIEEL.trim().split(/\s+/).length <= 5) {
+        continue;
+      }
+
       // Als we voor deze datum al een mail hebben verstuurd, sla deze record over.
       // De audit records lopen op datum/tijd dus we hebben dan al de meest recente versie gemaild.
       if (verstuurdeDatums.has(resultaat.DATUM)) {

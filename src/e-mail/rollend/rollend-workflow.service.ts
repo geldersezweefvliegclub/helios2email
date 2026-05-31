@@ -58,7 +58,8 @@ export class RollendWorkflowService {
       }
 
       // De dagrapport is wel gewijzigd, maar er is geen aanpassing gemaakt aan rollend materieel
-      if (voor && voor.ROLLENDMATERIEEL === resultaat.ROLLENDMATERIEEL) {
+      if (voor && voor.ROLLENDMATERIEEL === resultaat.ROLLENDMATERIEEL)
+      {
         continue;
       }
 
@@ -69,6 +70,11 @@ export class RollendWorkflowService {
 
       // Er is geen informatie over rollend materieel
       if (!resultaat.ROLLENDMATERIEEL || resultaat.ROLLENDMATERIEEL.trim().length === 0) {
+        continue;
+      }
+
+      // Rollend materieel omschrijving moet meer dan 5 woorden bevatten
+      if (resultaat.ROLLENDMATERIEEL.trim().split(/\s+/).length <= 5) {
         continue;
       }
 
