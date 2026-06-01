@@ -152,3 +152,4 @@ src/.DS_Store
 templates/.DS_Store
 /helios.account.json
 /google-sa-helios2email.json
+/templates/tmp.html
