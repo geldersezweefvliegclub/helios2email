@@ -63,7 +63,7 @@ export class MqttService implements OnApplicationBootstrap, OnApplicationShutdow
       return;
     }
 
-    this.logger.log(`helios: ${raw.type} op ${raw.table} (id: ${raw.data.record_id})`);
+    this.logger.verbose(`MQTT: ${raw.type} op ${raw.table} (id: ${raw.data.record_id})`);
 
     switch (raw.table) {
       case 'ref_leden':
