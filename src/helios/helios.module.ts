@@ -11,10 +11,11 @@ import { DienstenService } from './services/diensten.service';
 import { StartlijstService } from './services/startlijst.service';
 import { VliegtuigenService } from './services/vliegtuigen.service';
 import { ProgressieService } from './services/progressie.service';
+import { AanwezigLedenService } from './services/aanwezig-leden.service';
 
 @Module({
   imports: [GoogleModule], // Add GoogleModule to imports
-  providers: [APIService, LoginService, LedenService, AuditService, DaginfoService, DagrapportenService, RoosterService, DienstenService, StartlijstService, VliegtuigenService, ProgressieService],
-  exports: [APIService, LoginService, LedenService, AuditService, DaginfoService, DagrapportenService, RoosterService, DienstenService, StartlijstService, VliegtuigenService, ProgressieService]
+  providers: [APIService, LoginService, LedenService, AuditService, DaginfoService, DagrapportenService, RoosterService, DienstenService, StartlijstService, VliegtuigenService, ProgressieService, AanwezigLedenService],
+  exports: [APIService, LoginService, LedenService, AuditService, DaginfoService, DagrapportenService, RoosterService, DienstenService, StartlijstService, VliegtuigenService, ProgressieService, AanwezigLedenService]
 })
 export class HeliosModule {}

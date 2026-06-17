@@ -21,6 +21,7 @@ import {HerinneringDienstSmsModule} from "./sms/herinnering_diensten/herinnering
 import {MqttModule} from "./helios/mqtt/mqtt.module";
 import {WelkomModule} from "./e-mail/welkom/welkom.module";
 import {DtoVluchtenModule} from "./e-mail/dto-vluchten/dto-vluchten.module";
+import {DboMaandoverzichtModule} from "./e-mail/dbo-maandoverzicht/dbo-maandoverzicht.module";
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import {DtoVluchtenModule} from "./e-mail/dto-vluchten/dto-vluchten.module";
         CRON_HERINNERING_DAGINFO: Joi.string().optional(),
         CRON_HERINNERING_DIENSTEN: Joi.string().optional(),
         CRON_DTO_VLUCHTEN: Joi.string().optional(),
+        CRON_DBO_MAANDOVERZICHT: Joi.string().optional(),
         CRON_HERINNERING_DIENSTEN_SMS: Joi.string().optional(),
         CRON_TIMEZONE: Joi.string().optional(),
 
@@ -67,6 +69,7 @@ import {DtoVluchtenModule} from "./e-mail/dto-vluchten/dto-vluchten.module";
         BESTUUR_EMAIL: Joi.string().email().optional(),
         DTO_EMAIL: Joi.string().email().optional(),
         LEDEN_EMAIL: Joi.string().email().optional(),
+        DBO_MAANDOVERZICHT_EMAIL: Joi.string().email().optional(),
 
         LOGGER_SERVER_URL: Joi.string().optional(),
         LOGGER_API_KEY: Joi.string().optional(),
@@ -97,7 +100,8 @@ import {DtoVluchtenModule} from "./e-mail/dto-vluchten/dto-vluchten.module";
     WelkomModule,
     DtoVluchtenModule,
     HerinneringDienstenModule,
-    HerinneringDagrapportModule
+    HerinneringDagrapportModule,
+    DboMaandoverzichtModule
   ]
 })
 export class AppModule {}
