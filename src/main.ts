@@ -27,6 +27,7 @@ const createLogger = () => WinstonModule.createLogger({
   },
   transports: [
     new winston.transports.Console({
+      level: 'silly',
       format: winston.format.combine(
          winston.format.colorize({
            all: true,
